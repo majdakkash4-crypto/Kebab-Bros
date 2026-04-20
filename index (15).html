@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Kebab Bros Coesfeld — Handwerklicher Döner vom Marktplatz. Online bestellen, abholen oder liefern lassen." />
+<title>Kebab Bro's · Coesfeld</title>
+
+<link rel="icon" href="https://www.kebab-bros-coesfeld.de/cdn/shop/files/logo_transparent_66e234c3-edea-4fc8-b66e-5bf2b3f4d6d4.png?v=1675020109&width=64" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #0E0E0D;
+    --ink-soft: #1A1A18;
+    --ink-2: #252321;
+    --cream: #F4EDE0;
+    --cream-2: #E8DFCC;
+    --saffron: #D4A54C;
+    --saffron-2: #B8892F;
+    --paprika: #A8352B;
+    --moss: #3A4A35;
+    --char: #1F1D1B;
+    --muted: #807970;
+    --muted-2: #5E5850;
+    --line: rgba(14,14,13,0.10);
+    --line-strong: rgba(14,14,13,0.22);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--cream); color: var(--char); margin: 0; }
+  .font-display { font-family: 'Fraunces', Georgia, serif; font-variation-settings: "opsz" 144, "SOFT" 30; letter-spacing: -0.025em; }
+  .font-display-italic { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-variation-settings: "opsz" 144, "SOFT" 80; }
+  .font-archivo { font-family: 'Archivo', sans-serif; }
+  .eyebrow { font-family: 'Archivo', sans-serif; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.26em; }
+  .leader { flex: 1; border-bottom: 1px dotted var(--line-strong); margin: 0 0.6rem 0.4rem; min-width: 1rem; }
+
+  @keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes slideInR { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes softBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .anim-up { animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .anim-in-r { animation: slideInR 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .anim-fade { animation: fadeIn 0.35s ease-out; }
+  .blink { animation: softBlink 2.2s infinite; }
+  .marquee-track { animation: marquee 40s linear infinite; }
+
+  .grain::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 200;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E");
+    opacity: 0.06; mix-blend-mode: multiply;
+  }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--cream-2); }
+  ::-webkit-scrollbar-thumb { background: var(--ink); border-radius: 0; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .input { width: 100%; padding: 0.95rem 1rem; background: white; border: 1px solid var(--line-strong); border-radius: 0; font-size: 0.95rem; outline: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif; color: var(--char); }
+  .input:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(14,14,13,0.08); }
+
+  .btn-primary { background: var(--ink); color: var(--cream); padding: 1rem 1.75rem; border-radius: 0; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.8rem; transition: all 0.25s; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; font-family: 'Archivo', sans-serif; cursor: pointer; border: none; }
+  .btn-primary:hover { background: var(--saffron-2); color: var(--ink); }
+  .btn-gold { background: var(--saffron); color: var(--ink); padding: 1rem 1.75rem; border-radius: 0; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.8rem; transition: all 0.25s; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; font-family: 'Archivo', sans-serif; cursor: pointer; border: none; }
+  .btn-gold:hover { background: var(--cream); color: var(--ink); }
+  .btn-outline { background: transparent; color: var(--ink); padding: 1rem 1.75rem; border-radius: 0; border: 1px solid var(--ink); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.8rem; transition: all 0.25s; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; font-family: 'Archivo', sans-serif; cursor: pointer; }
+  .btn-outline:hover { background: var(--ink); color: var(--cream); }
+
+  #loader { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--cream); z-index: 9999; transition: opacity 0.5s; gap: 1rem; }
+  #loader.hide { opacity: 0; pointer-events: none; }
+
+  .img-fallback { background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%); position: relative; }
+  .img-fallback::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 30% 40%, rgba(212,165,76,0.18) 0%, transparent 55%), radial-gradient(circle at 70% 70%, rgba(139,58,42,0.12) 0%, transparent 55%); }
+
+  .menu-row { transition: all 0.25s; padding: 1.4rem 0; border-bottom: 1px solid var(--line); cursor: pointer; position: relative; }
+  .menu-row:hover { padding-left: 0.75rem; }
+  .menu-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--saffron); transform: scaleY(0); transition: transform 0.3s; }
+  .menu-row:hover::before { transform: scaleY(1); }
+
+  .hover-lift { transition: transform 0.4s cubic-bezier(0.2,0.8,0.2,1); }
+  .hover-lift:hover { transform: translateY(-6px); }
+
+  .flag { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: 3px 8px; border: 1px solid currentColor; border-radius: 0; font-family: 'Archivo', sans-serif; }
+  .flag-vegan { color: var(--moss); }
+  .flag-spicy { color: var(--paprika); }
+  .flag-popular { color: var(--saffron-2); }
+
+  .nav-link { position: relative; padding: 0.5rem 0; }
+  .nav-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 0.35s cubic-bezier(0.2,0.8,0.2,1); }
+  .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+  .nav-link.active::after { transform: scaleX(1); }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <img src="https://www.kebab-bros-coesfeld.de/cdn/shop/files/logo_transparent_66e234c3-edea-4fc8-b66e-5bf2b3f4d6d4.png?v=1675020109&width=600"
+       alt="Kebab Bro's" style="height: 90px; width: auto; animation: softBlink 1.8s infinite;"
+       onerror="this.style.display='none'" />
+  <div style="font-family: 'Archivo', sans-serif; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;">Coesfeld · Markt 3</div>
+</div>
+
+<div id="root"></div>
+
+<script type="text/babel" data-presets="env,react">
+
+const { useState, useEffect, useMemo, useCallback } = React;
+
+/* ================================================================
+   ICONS
+   ================================================================ */
+const Icon = ({ d, className = "w-5 h-5", stroke = 1.5, fill = "none", children }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+    fill={fill} stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round"
+    className={className}>{d ? <path d={d} /> : children}</svg>
+);
+const I = {
+  Bag: (p) => <Icon {...p}><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></Icon>,
+  Plus: (p) => <Icon {...p}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></Icon>,
+  Minus: (p) => <Icon {...p} d="M5 12h14" />,
+  X: (p) => <Icon {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></Icon>,
+  Pin: (p) => <Icon {...p}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></Icon>,
+  Phone: (p) => <Icon {...p} d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />,
+  Insta: (p) => <Icon {...p}><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></Icon>,
+  FB: (p) => <Icon {...p} d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />,
+  Mail: (p) => <Icon {...p}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></Icon>,
+  Leaf: (p) => <Icon {...p}><path d="M11 20A7 7 0 014 13V5a2 2 0 012-2h6a2 2 0 012 2v8a7 7 0 01-7 7z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 14 12"/></Icon>,
+  Search: (p) => <Icon {...p}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></Icon>,
+  Check: (p) => <Icon {...p} d="M20 6L9 17l-5-5" />,
+  Truck: (p) => <Icon {...p}><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></Icon>,
+  Store: (p) => <Icon {...p}><path d="M3 9l1-5h16l1 5"/><path d="M5 9v11a1 1 0 001 1h12a1 1 0 001-1V9"/><path d="M9 21v-6h6v6"/></Icon>,
+  Card: (p) => <Icon {...p}><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></Icon>,
+  Cash: (p) => <Icon {...p}><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></Icon>,
+  Star: (p) => <Icon {...p} fill="currentColor" stroke="none" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />,
+  Menu: (p) => <Icon {...p}><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="17" x2="20" y2="17"/></Icon>,
+  Arrow: (p) => <Icon {...p}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></Icon>,
+  ArrowUR: (p) => <Icon {...p}><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></Icon>,
+  Lock: (p) => <Icon {...p}><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></Icon>,
+  Quote: (p) => <Icon {...p} fill="currentColor" stroke="none" d="M3 21c3 0 7-1 7-8V5H3v8h3c0 3-3 4-3 4v4zm11 0c3 0 7-1 7-8V5h-7v8h3c0 3-3 4-3 4v4z" />,
+  Home: (p) => <Icon {...p}><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></Icon>,
+};
+
+/* ================================================================
+   LOGO (echtes Logo von der Original-Seite)
+   ================================================================ */
+const LOGO_URL = "https://www.kebab-bros-coesfeld.de/cdn/shop/files/logo_transparent_66e234c3-edea-4fc8-b66e-5bf2b3f4d6d4.png?v=1675020109&width=600";
+
+const Logo = ({ height = 56, variant = "light" }) => {
+  const [failed, setFailed] = useState(false);
+  const invertStyle = variant === "dark" ? { filter: "brightness(0) invert(1)" } : {};
+  if (failed) {
+    return (
+      <div style={{ height: height + "px", display: "flex", flexDirection: "column", justifyContent: "center", lineHeight: 1 }}>
+        <span className="font-display" style={{ fontSize: height * 0.35 + "px", color: variant === "dark" ? "#F4EDE0" : "#0E0E0D" }}>Kebab Bro's</span>
+        <span className="eyebrow" style={{ color: "#D4A54C", fontSize: "0.55rem", marginTop: "0.3rem" }}>COESFELD · MARKT 3</span>
+      </div>
+    );
+  }
+  return (
+    <img src={LOGO_URL} alt="Kebab Bro's Coesfeld"
+      style={{ height: height + "px", width: "auto", objectFit: "contain", ...invertStyle }}
+      onError={() => setFailed(true)} />
+  );
+};
+
+/* ================================================================
+   IMAGES — echte Döner-Fotos (Unsplash, kuratiert)
+   ================================================================ */
+const IMG = {
+  // Hero und Food-Hauptbilder
+  heroKebab: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=1600&q=85&auto=format&fit=crop",
+  heroDurum: "https://images.unsplash.com/photo-1561651823-34feb02250e4?w=1600&q=85&auto=format&fit=crop",
+  heroSpiess: "https://images.unsplash.com/photo-1530469912745-a215c6b256ea?w=1600&q=85&auto=format&fit=crop",
+
+  // Gerichte pro Kategorie
+  doner: "https://images.unsplash.com/photo-1561651823-34feb02250e4?w=1200&q=85&auto=format&fit=crop",
+  durum: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=1200&q=85&auto=format&fit=crop",
+  vegan: "https://images.unsplash.com/photo-1540914124281-342587941389?w=1200&q=85&auto=format&fit=crop",
+  vegetarisch: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1200&q=85&auto=format&fit=crop",
+  pasta: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=1200&q=85&auto=format&fit=crop",
+  bowls: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1200&q=85&auto=format&fit=crop",
+  salate: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=1200&q=85&auto=format&fit=crop",
+  schnitzel: "https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=85&auto=format&fit=crop",
+  angebote: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&q=85&auto=format&fit=crop",
+  saucen: "https://images.unsplash.com/photo-1472476443507-c7a5948772fc?w=1200&q=85&auto=format&fit=crop",
+  desserts: "https://images.unsplash.com/photo-1508737804141-4c3b688e2546?w=1200&q=85&auto=format&fit=crop",
+  getranke: "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=1200&q=85&auto=format&fit=crop",
+
+  // About / Storefront / Interior
+  market: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&q=85&auto=format&fit=crop",
+  hands: "https://images.unsplash.com/photo-1562967914-608f82629710?w=1200&q=85&auto=format&fit=crop",
+  spiessClose: "https://images.unsplash.com/photo-1628543778611-f1de58ecbed2?w=1200&q=85&auto=format&fit=crop",
+};
+
+/* ================================================================
+   MENU (echte Coesfeld-Gerichte)
+   ================================================================ */
+const MENU = [
+  // ANGEBOTE
+  { id: "k1", cat: "angebote", name: "Mittags-Kombi", desc: "Döner Tasche + Pommes + 0,33 l Getränk", price: 12.00, tag: "Mo–Fr bis 14:30" },
+  { id: "k2", cat: "angebote", name: "Bro's Kombi", desc: "Döner Dürüm + Pommes + Ayran", price: 13.50 },
+  { id: "k3", cat: "angebote", name: "Familien-Box", desc: "4 × Döner Tasche + große Pommes + 1,5 l Getränk", price: 36.00, tag: "Bestseller" },
+
+  // DÖNER
+  { id: "d1", cat: "doner", name: "Döner Tasche", desc: "Eisbergsalat, Krautsalat, Zwiebeln, Tomaten, Gurken, frittiertes Gemüse und Sauce nach Wahl", price: 7.00, pop: true },
+  { id: "d2", cat: "doner", name: "Jumbo Döner Tasche", desc: "XL-Fladenbrot mit großzügiger Fleischportion", price: 9.00, tag: "XL" },
+  { id: "d3", cat: "doner", name: "Döner Dürüm", desc: "Gerolltes Yufka mit Fleisch, Salat und Sauce", price: 7.50, pop: true },
+  { id: "d4", cat: "doner", name: "Jumbo Döner Dürüm", desc: "XL-Rolle mit doppelter Fleischportion", price: 10.00, tag: "XL" },
+  { id: "d5", cat: "doner", name: "Jumbo Supreme Döner", desc: "Cheddarsauce, Halloumi, Feta, Röstzwiebeln, frittiertes Gemüse und Parmesan", price: 11.00, tag: "Haus-Signature" },
+  { id: "d6", cat: "doner", name: "Döner Teller", desc: "Fleisch, frittiertes Gemüse, Zwiebeln, Salat, Pommes und Sauce", price: 12.50 },
+  { id: "d7", cat: "doner", name: "Döner Salat", desc: "Eisbergsalat, Tomaten, Gurken, Zwiebeln, frittiertes Gemüse, Halloumi und Feta", price: 10.50 },
+  { id: "d8", cat: "doner", name: "Döner Burger", desc: "Bun mit Dönerfleisch, Salat und Sauce", price: 5.00 },
+  { id: "d9", cat: "doner", name: "Pomm-Döner (Klein)", desc: "Pommes frites und Sauce nach Wahl", price: 6.50 },
+  { id: "d10", cat: "doner", name: "Pomm-Döner (Groß)", desc: "Große Portion Pommes mit Fleisch und Sauce", price: 8.50 },
+  { id: "d11", cat: "doner", name: "Portion Dönerfleisch", desc: "Extra Portion vom Spieß", price: 7.00 },
+
+  // VEGAN
+  { id: "v1", cat: "vegan", name: "Vegan Kebab", desc: "Veganes Spießfleisch, Eisbergsalat, Krautsalat, Zwiebeln, Tomaten, Gurken, frittiertes Gemüse und Sauce", price: 7.50, tag: "Nur in Coesfeld", veg: true, pop: true },
+  { id: "v2", cat: "vegan", name: "Jumbo Vegan Kebab", desc: "XL-Fladenbrot mit veganem Spießfleisch", price: 9.50, veg: true, tag: "XL" },
+  { id: "v3", cat: "vegan", name: "Vegan Dürüm", desc: "Yufka-Rolle mit veganem Spießfleisch und Salat", price: 8.00, veg: true },
+  { id: "v4", cat: "vegan", name: "Jumbo Vegan Dürüm", desc: "XL-Rolle mit doppelter Portion veganem Fleisch", price: 10.50, veg: true, tag: "XL" },
+  { id: "v5", cat: "vegan", name: "Vegan Bowl", desc: "Veganes Fleisch, Eisbergsalat, frittiertes Gemüse, Tomaten, Gurken und Edamame — mit Rucola, Sesam und Sauce", price: 14.40, veg: true, tag: "Signature" },
+
+  // VEGETARISCH
+  { id: "ve1", cat: "vegetarisch", name: "Vegetarische Tasche", desc: "Halloumi, Feta, Salat, Zwiebeln, Tomaten, Gurken und Sauce", price: 7.00, veg: true },
+  { id: "ve2", cat: "vegetarisch", name: "Vegetarische Dürüm", desc: "Yufka mit Halloumi, Feta und frischem Salat", price: 7.50, veg: true },
+  { id: "ve3", cat: "vegetarisch", name: "Falafel Tasche", desc: "Hausgemachte Falafel, Salat und Sauce", price: 7.00, veg: true },
+  { id: "ve4", cat: "vegetarisch", name: "Falafel Dürüm", desc: "Yufka-Rolle mit hausgemachter Falafel und Salat", price: 7.50, veg: true, pop: true },
+
+  // PASTA
+  { id: "p1", cat: "pasta", name: "Penne Bolognese", desc: "Hausgemachte Bolognese-Sauce", price: 10.00 },
+  { id: "p2", cat: "pasta", name: "Penne Arrabbiata", desc: "Scharfe Tomatensauce mit Knoblauch", price: 9.00, veg: true, tag: "Scharf" },
+  { id: "p3", cat: "pasta", name: "Penne al Funghi", desc: "Sahnesauce mit Pilzen und Parmesan", price: 10.00, veg: true },
+  { id: "p4", cat: "pasta", name: "Penne Pollo", desc: "Hähnchenbrust, Sahnesauce, Paprika und Champignons", price: 11.00 },
+
+  // BOWLS
+  { id: "b1", cat: "bowls", name: "Döner Bowl", desc: "Reis, Dönerfleisch, frittiertes Gemüse, Tomaten, Gurken", price: 12.50 },
+  { id: "b2", cat: "bowls", name: "Supreme Bowl", desc: "Reis, Fleisch nach Wahl, Cheddarsauce, Feta, Röstzwiebeln, Parmesan", price: 13.50 },
+  { id: "b3", cat: "bowls", name: "Vegan Bowl", desc: "Veganes Fleisch, Eisbergsalat, frittiertes Gemüse, Tomaten, Gurken und Edamame", price: 14.40, veg: true, tag: "Bestseller" },
+  { id: "b4", cat: "bowls", name: "Falafel Bowl", desc: "Hausgemachte Falafel, Bulgur, Salat, Hummus", price: 11.50, veg: true },
+
+  // SALATE
+  { id: "s1", cat: "salate", name: "Gemischter Salat", desc: "Eisbergsalat, Tomaten, Gurken, Krautsalat, Paprika", price: 6.50, veg: true },
+  { id: "s2", cat: "salate", name: "Chicken Salat", desc: "Gemischter Salat mit gegrillter Hähnchenbrust", price: 10.00 },
+  { id: "s3", cat: "salate", name: "Falafel Salat", desc: "Gemischter Salat mit hausgemachter Falafel und Hummus", price: 9.50, veg: true },
+  { id: "s4", cat: "salate", name: "Halloumi Salat", desc: "Gemischter Salat mit gegrilltem Halloumi und Feta", price: 9.50, veg: true },
+
+  // SCHNITZEL & CO.
+  { id: "sc1", cat: "schnitzel", name: "Hähnchenschnitzel", desc: "Mit Pommes frites und Sauce nach Wahl", price: 10.50 },
+  { id: "sc2", cat: "schnitzel", name: "Schnitzel mit Salat", desc: "Hähnchenschnitzel mit gemischtem Salat", price: 11.50 },
+  { id: "sc3", cat: "schnitzel", name: "Pommes Frites (Klein)", desc: "Mit Sauce nach Wahl", price: 3.00 },
+  { id: "sc4", cat: "schnitzel", name: "Pommes Frites (Groß)", desc: "Mit Sauce nach Wahl", price: 4.00 },
+  { id: "sc5", cat: "schnitzel", name: "Chicken Nuggets (8 Stück)", desc: "Mit Pommes und Sauce", price: 8.50 },
+
+  // SAUCEN
+  { id: "sa1", cat: "saucen", name: "Knoblauch-Sauce", desc: "Hausgemacht", price: 1.00 },
+  { id: "sa2", cat: "saucen", name: "Cocktail-Sauce", desc: "", price: 1.00 },
+  { id: "sa3", cat: "saucen", name: "Scharfe Sauce", desc: "", price: 1.00, tag: "Scharf" },
+  { id: "sa4", cat: "saucen", name: "Kräuter-Sauce", desc: "", price: 1.00 },
+  { id: "sa5", cat: "saucen", name: "Tzatziki", desc: "Mit Gurke und Knoblauch", price: 1.50 },
+  { id: "sa6", cat: "saucen", name: "Vegane Tzatziki", desc: "Pflanzlich", price: 1.50, veg: true },
+  { id: "sa7", cat: "saucen", name: "Vegane Cocktail-Sauce", desc: "Pflanzlich", price: 1.50, veg: true },
+
+  // DESSERTS
+  { id: "de1", cat: "desserts", name: "Baklava", desc: "Hausgemacht mit Pistazien", price: 4.50 },
+  { id: "de2", cat: "desserts", name: "Künefe", desc: "Warmer Käsekuchen mit Sirup", price: 6.50 },
+  { id: "de3", cat: "desserts", name: "Schokoladen-Kuchen", desc: "Hausgemacht", price: 4.00, veg: true },
+  { id: "de4", cat: "desserts", name: "Tiramisu", desc: "Klassisch italienisch", price: 4.50, veg: true },
+
+  // GETRÄNKE
+  { id: "g1", cat: "getranke", name: "Coca-Cola", desc: "0,33 l", price: 2.50 },
+  { id: "g2", cat: "getranke", name: "Coca-Cola Zero", desc: "0,33 l", price: 2.50 },
+  { id: "g3", cat: "getranke", name: "Fanta Orange", desc: "0,33 l", price: 2.50 },
+  { id: "g4", cat: "getranke", name: "Sprite", desc: "0,33 l", price: 2.50 },
+  { id: "g5", cat: "getranke", name: "Mezzo Mix", desc: "0,33 l", price: 2.50 },
+  { id: "g6", cat: "getranke", name: "Wasser", desc: "0,5 l · still oder sprudelnd", price: 2.00 },
+  { id: "g7", cat: "getranke", name: "Ayran", desc: "0,25 l · türkisches Joghurtgetränk", price: 2.00 },
+  { id: "g8", cat: "getranke", name: "Çay", desc: "Türkischer Schwarztee", price: 2.00 },
+  { id: "g9", cat: "getranke", name: "Coca-Cola Flasche", desc: "1,5 l", price: 4.50 },
+  { id: "g10", cat: "getranke", name: "Fanta Flasche", desc: "1,5 l", price: 4.50 },
+];
+
+const CATEGORIES = [
+  { id: "angebote", name: "Angebote", subtitle: "Kombi-Menüs zum Sparen", num: "01", img: IMG.angebote },
+  { id: "doner", name: "Döner", subtitle: "Hähnchen oder Kalb · vom Spieß", num: "02", img: IMG.doner },
+  { id: "vegan", name: "Vegan", subtitle: "Veganes Spießfleisch — nur in Coesfeld", num: "03", img: IMG.vegan },
+  { id: "vegetarisch", name: "Vegetarisch", subtitle: "Halloumi, Feta, Falafel", num: "04", img: IMG.vegetarisch },
+  { id: "pasta", name: "Pasta", subtitle: "Italienische Klassiker", num: "05", img: IMG.pasta },
+  { id: "bowls", name: "Bowls", subtitle: "Mit Rucola, Sesam und Sauce", num: "06", img: IMG.bowls },
+  { id: "salate", name: "Salate", subtitle: "Frisch und knackig", num: "07", img: IMG.salate },
+  { id: "schnitzel", name: "Schnitzel & Co.", subtitle: "Schnitzel, Pommes, Nuggets", num: "08", img: IMG.schnitzel },
+  { id: "saucen", name: "Saucen", subtitle: "Hausgemachte Extras", num: "09", img: IMG.saucen },
+  { id: "desserts", name: "Desserts", subtitle: "Hausgemacht zum Abschluss", num: "10", img: IMG.desserts },
+  { id: "getranke", name: "Getränke", subtitle: "Kalt, heiß, traditionell", num: "11", img: IMG.getranke },
+];
+
+const SAUCES = ["Knoblauch", "Cocktail", "Scharfe Sauce", "Kräutercreme", "Tzatziki", "Vegane Tzatziki", "Ohne Sauce"];
+
+const EUR = (n) => n.toFixed(2).replace(".", ",");
+const uid = () => "BRO-" + Math.random().toString(36).slice(2, 6).toUpperCase() + "-" + Date.now().toString().slice(-4);
+
+const db = {
+  get(key, fallback = null) {
+    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; }
+  },
+  set(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; }
+  },
+};
+
+function getOpenStatus() {
+  const now = new Date();
+  const day = now.getDay();
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const weekend = day === 0 || day === 6;
+  const open = weekend ? 13 * 60 : 11 * 60 + 30;
+  const close = 21 * 60 + 30;
+  const isOpen = mins >= open && mins < close;
+  let label;
+  if (isOpen) {
+    const m = close - mins;
+    label = "Schließt in " + Math.floor(m / 60) + "h " + (m % 60) + "m";
+  } else {
+    label = mins < open ? "Heute ab " + (weekend ? "13:00" : "11:30") : "Morgen geöffnet";
+  }
+  return { isOpen, label };
+}
+
+const SafeImage = ({ src, alt, className, style }) => {
+  const [err, setErr] = useState(false);
+  if (err || !src) return <div className={"img-fallback " + (className || "")} style={style} />;
+  return <img src={src} alt={alt} className={className} style={style} loading="lazy" onError={() => setErr(true)} />;
+};
+
+/* ================================================================
+   ROUTER (Hash-basiert für Static-Hosting / Vercel-kompatibel)
+   ================================================================ */
+const useRouter = () => {
+  const [path, setPath] = useState(() => {
+    const h = window.location.hash.slice(1);
+    return h || "/";
+  });
+  useEffect(() => {
+    const onChange = () => setPath(window.location.hash.slice(1) || "/");
+    window.addEventListener("hashchange", onChange);
+    return () => window.removeEventListener("hashchange", onChange);
+  }, []);
+  const navigate = (newPath) => {
+    window.location.hash = newPath;
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+  return { path, navigate };
+};
+
+/* ================================================================
+   HAUPT-APP
+   ================================================================ */
+function App() {
+  const { path, navigate } = useRouter();
+  const [cart, setCart] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [checkoutStage, setCheckoutStage] = useState(null);
+  const [lastOrder, setLastOrder] = useState(null);
+  const [openStatus, setOpenStatus] = useState(getOpenStatus());
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    setCart(db.get("bros:cart", []));
+    setOrders(db.get("bros:orders", []));
+  }, []);
+
+  useEffect(() => {
+    const t = setInterval(() => setOpenStatus(getOpenStatus()), 60000);
+    return () => clearInterval(t);
+  }, []);
+
+  useEffect(() => { db.set("bros:cart", cart); }, [cart]);
+
+  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2400); };
+
+  const addToCart = (item, sauce = null) => {
+    const needsSauce = ["doner", "vegan", "vegetarisch", "schnitzel"].includes(item.cat);
+    const s = sauce || (needsSauce ? SAUCES[0] : null);
+    setCart((c) => {
+      const existing = c.find((i) => i.id === item.id && i.sauce === s);
+      if (existing) return c.map((i) => i === existing ? { ...i, qty: i.qty + 1 } : i);
+      return [...c, { ...item, sauce: s, qty: 1, lineId: Math.random().toString(36).slice(2) }];
+    });
+    showToast(item.name + " — in den Warenkorb");
+  };
+  const updateQty = (lineId, delta) => {
+    setCart((c) => c.map((i) => i.lineId === lineId ? { ...i, qty: Math.max(0, i.qty + delta) } : i).filter((i) => i.qty > 0));
+  };
+  const removeLine = (lineId) => setCart((c) => c.filter((i) => i.lineId !== lineId));
+  const clearCart = () => setCart([]);
+
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+
+  const placeOrder = (formData) => {
+    const order = {
+      id: uid(), items: cart, subtotal, delivery: formData.mode === "lieferung",
+      total: subtotal, customer: formData, status: "Eingegangen", createdAt: Date.now(),
+    };
+    const newOrders = [order, ...orders];
+    setOrders(newOrders);
+    db.set("bros:orders", newOrders);
+    setLastOrder(order);
+    setCart([]);
+    setCheckoutStage("done");
+  };
+
+  // Page-Routing
+  const renderPage = () => {
+    if (path === "/" || path === "") return <HomePage navigate={navigate} openStatus={openStatus} onAdd={addToCart} />;
+    if (path === "/speisekarte") return <MenuPage onAdd={addToCart} navigate={navigate} />;
+    if (path === "/ueber-uns") return <AboutPage navigate={navigate} />;
+    if (path === "/kontakt") return <ContactPage openStatus={openStatus} />;
+    if (path === "/impressum") return <LegalPage navigate={navigate} />;
+    if (path === "/admin") return <AdminPage orders={orders} />;
+    return <NotFoundPage navigate={navigate} />;
+  };
+
+  return (
+    <div style={{ background: "var(--cream)" }}>
+      <div className="grain"></div>
+      <Header cartCount={cartCount} onCart={() => setCartOpen(true)} navigate={navigate} path={path} openStatus={openStatus} />
+      {toast && <Toast msg={toast} />}
+
+      <main className="anim-fade" key={path}>
+        {renderPage()}
+      </main>
+
+      <Footer navigate={navigate} />
+
+      {cartOpen && <CartDrawer cart={cart} subtotal={subtotal}
+        onClose={() => setCartOpen(false)} onUpdate={updateQty} onRemove={removeLine} onClear={clearCart}
+        onCheckout={() => { setCartOpen(false); setCheckoutStage("form"); }}
+        navigate={navigate} />}
+
+      {checkoutStage === "form" && <CheckoutModal subtotal={subtotal} cart={cart}
+        onClose={() => setCheckoutStage(null)} onSubmit={placeOrder} />}
+
+      {checkoutStage === "done" && lastOrder && <OrderConfirmation order={lastOrder}
+        onClose={() => { setCheckoutStage(null); setLastOrder(null); navigate("/"); }} />}
+    </div>
+  );
+}
+
+/* ================================================================
+   HEADER
+   ================================================================ */
+function Header({ cartCount, onCart, navigate, path, openStatus }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const links = [
+    { href: "/", label: "Start" },
+    { href: "/speisekarte", label: "Speisekarte" },
+    { href: "/ueber-uns", label: "Über uns" },
+    { href: "/kontakt", label: "Kontakt" },
+  ];
+
+  const go = (href, close = false) => (e) => {
+    e.preventDefault();
+    navigate(href);
+    if (close) setMobileOpen(false);
+  };
+
+  return (
+    <header className={"sticky top-0 z-40 transition-all duration-300 " + (scrolled ? "bg-[var(--cream)]/95 backdrop-blur-md border-b border-[var(--line-strong)]" : "bg-[var(--cream)] border-b border-transparent")}>
+      <div className="max-w-[1400px] mx-auto px-5 md:px-10 h-20 md:h-24 flex items-center justify-between gap-6">
+        <a href="#/" onClick={go("/")} className="hover-lift flex-shrink-0">
+          <Logo height={56} variant="light" />
+        </a>
+
+        <nav className="hidden md:flex items-center gap-8 text-sm">
+          {links.map((l) => (
+            <a key={l.href} href={"#" + l.href} onClick={go(l.href)}
+              className={"nav-link font-medium transition " + (path === l.href ? "active text-[var(--ink)]" : "text-[var(--muted-2)] hover:text-[var(--ink)]")}>
+              {l.label}
+            </a>
+          ))}
+          <div className="flex items-center gap-2 pl-4 border-l border-[var(--line-strong)]">
+            <span className={"w-1.5 h-1.5 rounded-full " + (openStatus.isOpen ? "bg-green-600 blink" : "bg-[var(--paprika)]")}></span>
+            <span className="eyebrow">{openStatus.isOpen ? "Geöffnet" : "Geschlossen"}</span>
+          </div>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <a href="tel:+4925418444390" className="hidden lg:flex items-center gap-2 text-sm hover:text-[var(--saffron-2)] transition">
+            <I.Phone className="w-4 h-4" />
+            <span className="font-medium tabular-nums">02541 8444390</span>
+          </a>
+          <button onClick={onCart}
+            className="relative flex items-center gap-2 px-4 md:px-5 py-2.5 bg-[var(--ink)] text-[var(--cream)] hover:bg-[var(--saffron-2)] transition">
+            <I.Bag className="w-4 h-4" />
+            <span className="hidden md:inline text-sm font-archivo uppercase tracking-[0.1em]">Warenkorb</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 w-6 h-6 bg-[var(--saffron)] text-[var(--ink)] text-xs font-bold flex items-center justify-center tabular-nums">
+                {cartCount}
+              </span>
+            )}
+          </button>
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2"><I.Menu className="w-6 h-6" /></button>
+        </div>
+      </div>
+      {mobileOpen && (
+        <div className="md:hidden border-t border-[var(--line-strong)] bg-[var(--cream)] anim-fade">
+          {links.map((l) => (
+            <a key={l.href} href={"#" + l.href} onClick={go(l.href, true)}
+              className={"block px-6 py-4 border-b border-[var(--line)] " + (path === l.href ? "text-[var(--saffron-2)] font-semibold" : "")}>
+              {l.label}
+            </a>
+          ))}
+          <a href="tel:+4925418444390" className="block px-6 py-4 text-[var(--saffron-2)] font-medium">02541 8444390</a>
+        </div>
+      )}
+    </header>
+  );
+}
+
+/* ================================================================
+   STARTSEITE
+   ================================================================ */
+function HomePage({ navigate, openStatus, onAdd }) {
+  const go = (href) => (e) => { e.preventDefault(); navigate(href); };
+
+  const signatures = [
+    MENU.find(m => m.id === "d5"),
+    MENU.find(m => m.id === "v1"),
+    MENU.find(m => m.id === "b3"),
+  ];
+  const sigImages = [IMG.doner, IMG.vegan, IMG.bowls];
+  const sigEyebrows = ["Haus-Signature", "Exklusiv in Coesfeld", "Bestseller"];
+
+  return (
+    <>
+      {/* HERO */}
+      <section className="relative max-w-[1400px] mx-auto px-5 md:px-10 pt-8 md:pt-16 pb-20 md:pb-32">
+        <div className="grid md:grid-cols-12 gap-8 md:gap-16 items-center">
+          <div className="md:col-span-6 order-2 md:order-1 anim-up">
+            <div className="eyebrow text-[var(--saffron-2)] mb-8 flex items-center gap-3">
+              <span className="w-8 h-px bg-[var(--saffron)]"></span>
+              Seit Tag Eins · Coesfeld
+            </div>
+            <h1 className="font-display text-[clamp(3rem,9vw,7.5rem)] leading-[0.92] text-[var(--ink)] mb-6">
+              Echter Döner.<br />
+              <span className="font-display-italic text-[var(--saffron-2)]">Nichts drumherum.</span>
+            </h1>
+            <p className="text-base md:text-lg text-[var(--muted-2)] max-w-md leading-relaxed mt-8 mb-10">
+              Saftiges Fleisch vom Spieß, knuspriges Brot, frischer Salat,
+              Saucen mit Charakter. Und — nur bei uns in Coesfeld — pflanzliches
+              Spießfleisch, das mithält.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a href="#/speisekarte" onClick={go("/speisekarte")} className="btn-primary">
+                Jetzt bestellen <I.Arrow className="w-4 h-4" />
+              </a>
+              <a href="#/ueber-uns" onClick={go("/ueber-uns")} className="btn-outline">Über uns</a>
+            </div>
+            <div className="mt-14 pt-8 border-t border-[var(--line-strong)] grid grid-cols-3 gap-6">
+              <HeroStat value="4,9" label="Google Sterne" icon={<div className="flex gap-0.5">{[1,2,3,4,5].map(i => <I.Star key={i} className="w-3 h-3 text-[var(--saffron)]" />)}</div>} />
+              <HeroStat value="15 Min." label="Abholzeit" />
+              <HeroStat value="ab 15 €" label="Lieferung" />
+            </div>
+          </div>
+          <div className="md:col-span-6 order-1 md:order-2 relative">
+            <div className="relative aspect-[4/5] overflow-hidden">
+              <SafeImage src={IMG.heroKebab} alt="Handwerklicher Döner vom Spieß" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+
+              <div className="absolute top-5 left-5 bg-[var(--cream)] px-5 py-3.5">
+                <div className="eyebrow text-[var(--muted-2)] mb-1">Status</div>
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <span className={"w-1.5 h-1.5 rounded-full " + (openStatus.isOpen ? "bg-green-600 blink" : "bg-[var(--paprika)]")}></span>
+                  {openStatus.isOpen ? "Geöffnet" : "Geschlossen"}
+                </div>
+                <div className="text-xs text-[var(--muted-2)] mt-1">{openStatus.label}</div>
+              </div>
+
+              <div className="absolute bottom-5 right-5 bg-[var(--ink)] text-[var(--cream)] px-5 py-4 max-w-[220px]">
+                <div className="eyebrow text-[var(--saffron)] mb-2 flex items-center gap-1.5">
+                  <I.Leaf className="w-3 h-3" /> Nur in Coesfeld
+                </div>
+                <div className="font-display text-lg leading-tight">Vegan Döner — mit echtem Spießfleisch</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MARQUEE */}
+      <div className="bg-[var(--ink)] text-[var(--cream)] overflow-hidden py-5 border-y border-[var(--ink)]">
+        <div className="flex marquee-track whitespace-nowrap">
+          {[...Array(2)].map((_, n) => (
+            <React.Fragment key={n}>
+              {["Handwerklicher Döner", "Frisches Fladenbrot", "Vegane Auswahl", "Hausgemachte Saucen", "Pasta al Dente", "Mittelbestellwert 15 €", "Seit '23 am Markt"].map((t, i) => (
+                <div key={n + "-" + i} className="flex items-center gap-8 px-8 flex-shrink-0">
+                  <span className="font-display-italic text-2xl md:text-3xl text-[var(--saffron)]">{t}</span>
+                  <svg width="20" height="20" viewBox="0 0 20 20" className="text-[var(--cream)]/40"><circle cx="10" cy="10" r="2.5" fill="currentColor" /></svg>
+                </div>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      {/* SIGNATURES */}
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 py-24 md:py-32">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+          <div>
+            <div className="eyebrow text-[var(--saffron-2)] mb-6">Das Haus empfiehlt</div>
+            <h2 className="font-display text-5xl md:text-7xl leading-[0.92] text-[var(--ink)]">
+              Unsere<br />
+              <span className="font-display-italic">Signaturen.</span>
+            </h2>
+          </div>
+          <a href="#/speisekarte" onClick={go("/speisekarte")} className="btn-outline self-start md:self-auto">
+            Ganze Speisekarte <I.Arrow className="w-4 h-4" />
+          </a>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6 md:gap-10">
+          {signatures.map((item, i) => item && (
+            <article key={item.id} className="group hover-lift">
+              <div className="relative aspect-[4/5] overflow-hidden mb-6">
+                <SafeImage src={sigImages[i]} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+              </div>
+              <div className="eyebrow text-[var(--saffron-2)] mb-3">{sigEyebrows[i]}</div>
+              <h3 className="font-display text-3xl md:text-4xl text-[var(--ink)] mb-3">{item.name}</h3>
+              <p className="text-[var(--muted-2)] text-sm leading-relaxed mb-5">{item.desc}</p>
+              <div className="flex items-center justify-between pt-4 border-t border-[var(--line-strong)]">
+                <span className="font-display text-2xl text-[var(--ink)]">€ {EUR(item.price)}</span>
+                <button onClick={() => onAdd(item)}
+                  className="text-xs uppercase tracking-[0.2em] font-semibold flex items-center gap-2 text-[var(--saffron-2)] hover:text-[var(--ink)] transition font-archivo">
+                  Bestellen <I.ArrowUR className="w-4 h-4" />
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* STORY-TEASER */}
+      <section className="bg-[var(--ink)] text-[var(--cream)] py-24 md:py-32">
+        <div className="max-w-[1400px] mx-auto px-5 md:px-10 grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-6">
+            <div className="aspect-[4/5] overflow-hidden">
+              <SafeImage src={IMG.market} alt="Marktplatz Coesfeld" className="w-full h-full object-cover" />
+            </div>
+          </div>
+          <div className="md:col-span-6">
+            <div className="eyebrow text-[var(--saffron)] mb-6">Unsere Geschichte</div>
+            <h2 className="font-display text-5xl md:text-7xl leading-[0.92] mb-8">
+              Mitten auf dem<br />
+              <span className="font-display-italic">Marktplatz.</span>
+            </h2>
+            <p className="text-base md:text-lg leading-relaxed opacity-80 mb-8">
+              Markt 3 — genau zwischen Fußgängerzone und alter Kirche. Hier servieren
+              wir Döner, wie wir ihn selbst lieben: sorgfältig gewürzt, am Spieß gegrillt,
+              in frisches Fladenbrot gewickelt.
+            </p>
+            <a href="#/ueber-uns" onClick={go("/ueber-uns")} className="btn-gold">
+              Mehr erfahren <I.Arrow className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* TEASER KATEGORIEN */}
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 py-24 md:py-32">
+        <div className="text-center mb-16">
+          <div className="eyebrow text-[var(--saffron-2)] mb-5">Entdecke</div>
+          <h2 className="font-display text-5xl md:text-7xl text-[var(--ink)] leading-[0.92]">
+            Was es bei uns <span className="font-display-italic">gibt.</span>
+          </h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          {CATEGORIES.slice(0, 8).map((c) => (
+            <a key={c.id} href="#/speisekarte" onClick={go("/speisekarte")}
+              className="group block hover-lift">
+              <div className="aspect-square overflow-hidden mb-4">
+                <SafeImage src={c.img} alt={c.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+              </div>
+              <div className="eyebrow text-[var(--muted)] mb-1">{c.num}</div>
+              <div className="font-display text-xl md:text-2xl text-[var(--ink)]">{c.name}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+
+const HeroStat = ({ value, label, icon }) => (
+  <div>
+    {icon && <div className="mb-2">{icon}</div>}
+    <div className="font-display text-3xl md:text-4xl text-[var(--ink)]">{value}</div>
+    <div className="eyebrow text-[var(--muted)] mt-1.5">{label}</div>
+  </div>
+);
+
+/* ================================================================
+   SPEISEKARTE (reine Menü-Seite)
+   ================================================================ */
+function MenuPage({ onAdd, navigate }) {
+  const [search, setSearch] = useState("");
+  const [activeCat, setActiveCat] = useState("angebote");
+
+  const filtered = useMemo(() => {
+    const s = search.trim().toLowerCase();
+    if (!s) return MENU;
+    return MENU.filter((i) => i.name.toLowerCase().includes(s) || i.desc.toLowerCase().includes(s));
+  }, [search]);
+
+  const byCategory = (catId) => filtered.filter((i) => i.cat === catId);
+
+  return (
+    <>
+      {/* Page-Header */}
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 pt-16 md:pt-24 pb-12">
+        <div className="eyebrow text-[var(--saffron-2)] mb-5 flex items-center gap-3">
+          <a href="#/" onClick={(e) => { e.preventDefault(); navigate("/"); }} className="hover:text-[var(--ink)]">Start</a>
+          <span>/</span>
+          <span className="text-[var(--ink)]">Speisekarte</span>
+        </div>
+        <h1 className="font-display text-6xl md:text-[9rem] leading-[0.88] text-[var(--ink)]">
+          Speisekarte<span className="text-[var(--saffron-2)]">.</span>
+        </h1>
+        <p className="font-display-italic text-xl md:text-2xl text-[var(--muted-2)] mt-6 max-w-2xl">
+          Unsere komplette Karte — von Döner über Pasta bis Dessert. Alles kann online bestellt, abgeholt oder geliefert werden.
+        </p>
+        <div className="max-w-md relative mt-10">
+          <I.Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted)]" />
+          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
+            placeholder="Gericht suchen — z. B. Dürüm, vegan, Falafel …"
+            className="input pl-11" />
+        </div>
+      </section>
+
+      {/* Sticky Kategorie-Rail */}
+      <div className="sticky top-20 md:top-24 z-30 bg-[var(--cream)]/95 backdrop-blur-md border-y border-[var(--line-strong)]">
+        <div className="max-w-[1400px] mx-auto px-5 md:px-10 py-4">
+          <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+            {CATEGORIES.map((c) => (
+              <button key={c.id} onClick={() => {
+                setActiveCat(c.id);
+                document.getElementById("cat-" + c.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+                className={"flex-shrink-0 px-4 md:px-5 py-2 text-sm whitespace-nowrap transition font-archivo " + (activeCat === c.id ? "text-[var(--ink)] font-semibold" : "text-[var(--muted)] hover:text-[var(--ink)]")}>
+                <span className="eyebrow mr-2 opacity-50">{c.num}</span>{c.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Kategorie-Blöcke */}
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 py-16 md:py-24 space-y-20 md:space-y-28">
+        {CATEGORIES.map((cat) => {
+          const items = byCategory(cat.id);
+          if (!items.length) return null;
+          return (
+            <div key={cat.id} id={"cat-" + cat.id} style={{ scrollMarginTop: "10rem" }}>
+              <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-start">
+                <div className="md:col-span-5 md:sticky md:top-40">
+                  <div className="aspect-[4/5] overflow-hidden mb-6">
+                    <SafeImage src={cat.img} alt={cat.name} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="eyebrow text-[var(--saffron-2)] mb-3">Kapitel {cat.num}</div>
+                  <h2 className="font-display text-5xl md:text-6xl text-[var(--ink)] leading-[0.92] mb-3">{cat.name}</h2>
+                  <p className="font-display-italic text-lg text-[var(--muted-2)]">{cat.subtitle}</p>
+                </div>
+                <div className="md:col-span-7">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="eyebrow text-[var(--muted)]">Gerichte</span>
+                    <span className="leader"></span>
+                    <span className="eyebrow text-[var(--muted)]">Preis</span>
+                  </div>
+                  <div>
+                    {items.map((item) => <MenuRow key={item.id} item={item} onAdd={onAdd} />)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+        {filtered.length === 0 && (
+          <div className="text-center py-24">
+            <p className="font-display-italic text-3xl text-[var(--muted)]">Keine Gerichte zu „{search}".</p>
+            <button onClick={() => setSearch("")} className="mt-4 text-sm underline text-[var(--saffron-2)]">Suche zurücksetzen</button>
+          </div>
+        )}
+      </section>
+
+      {/* Lieferinfo-Streifen */}
+      <section className="bg-[var(--ink)] text-[var(--cream)] py-16">
+        <div className="max-w-[1400px] mx-auto px-5 md:px-10 grid md:grid-cols-3 gap-10">
+          <div>
+            <div className="eyebrow text-[var(--saffron)] mb-3">Mindestbestellwert</div>
+            <div className="font-display text-2xl mb-2">Coesfeld · 15 €</div>
+            <p className="text-sm opacity-70">Außerhalb ab 25 €. Lieferung ohne Aufpreis.</p>
+          </div>
+          <div>
+            <div className="eyebrow text-[var(--saffron)] mb-3">Lieferzeit</div>
+            <div className="font-display text-2xl mb-2">bis 60 Min.</div>
+            <p className="text-sm opacity-70">Abholung in ca. 15 Minuten möglich.</p>
+          </div>
+          <div>
+            <div className="eyebrow text-[var(--saffron)] mb-3">Zahlung</div>
+            <div className="font-display text-2xl mb-2">Bar · PayPal · Karte</div>
+            <p className="text-sm opacity-70">Online per PayPal oder bar bei Lieferung.</p>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function MenuRow({ item, onAdd }) {
+  const [showSauce, setShowSauce] = useState(false);
+  const [sauce, setSauce] = useState(SAUCES[0]);
+  const needsSauce = ["doner", "vegan", "vegetarisch", "schnitzel"].includes(item.cat);
+
+  const handleAdd = (e) => {
+    if (e) e.stopPropagation();
+    if (needsSauce && !showSauce) {
+      setShowSauce(true);
+      return;
+    }
+    onAdd(item, needsSauce ? sauce : null);
+    setShowSauce(false);
+  };
+
+  return (
+    <div className="menu-row" onClick={handleAdd}>
+      <div className="flex items-baseline gap-3 mb-1.5 flex-wrap">
+        <h4 className="font-display text-xl md:text-[1.4rem] text-[var(--ink)] leading-tight">{item.name}</h4>
+        {item.pop && <span className="flag flag-popular">Beliebt</span>}
+        {item.veg && <span className="flag flag-vegan"><I.Leaf className="w-2.5 h-2.5" />Pflanzl.</span>}
+        {item.tag && !item.pop && <span className="flag flag-popular">{item.tag}</span>}
+        <span className="leader"></span>
+        <span className="font-display text-xl md:text-[1.4rem] text-[var(--ink)] flex-shrink-0 tabular-nums">€ {EUR(item.price)}</span>
+      </div>
+      {item.desc && <p className="text-sm text-[var(--muted-2)] leading-relaxed pr-6 md:pr-28 mt-1">{item.desc}</p>}
+
+      {showSauce && (
+        <div className="mt-4 anim-fade" onClick={(e) => e.stopPropagation()}>
+          <div className="eyebrow text-[var(--muted)] mb-2.5">Sauce wählen</div>
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {SAUCES.map((s) => (
+              <button key={s} onClick={() => setSauce(s)}
+                className={"px-3 py-1.5 text-xs transition font-archivo " + (sauce === s ? "bg-[var(--ink)] text-[var(--cream)]" : "bg-white text-[var(--char)] border border-[var(--line-strong)] hover:border-[var(--ink)]")}>
+                {s}
+              </button>
+            ))}
+          </div>
+          <button onClick={handleAdd} className="btn-primary text-xs py-2 px-4">
+            Hinzufügen <I.Plus className="w-3 h-3" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ================================================================
+   ÜBER-UNS-SEITE
+   ================================================================ */
+function AboutPage({ navigate }) {
+  return (
+    <>
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 pt-16 md:pt-24 pb-12">
+        <div className="eyebrow text-[var(--saffron-2)] mb-5 flex items-center gap-3">
+          <a href="#/" onClick={(e) => { e.preventDefault(); navigate("/"); }} className="hover:text-[var(--ink)]">Start</a>
+          <span>/</span>
+          <span className="text-[var(--ink)]">Über uns</span>
+        </div>
+        <h1 className="font-display text-6xl md:text-[9rem] leading-[0.88] text-[var(--ink)]">
+          Über uns<span className="text-[var(--saffron-2)]">.</span>
+        </h1>
+      </section>
+
+      {/* Story */}
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 py-16 md:py-24">
+        <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div className="md:col-span-5">
+            <div className="aspect-[4/5] overflow-hidden">
+              <SafeImage src={IMG.market} alt="Marktplatz Coesfeld" className="w-full h-full object-cover" />
+            </div>
+          </div>
+          <div className="md:col-span-7">
+            <div className="eyebrow text-[var(--saffron-2)] mb-5">Markt 3 · Coesfeld</div>
+            <h2 className="font-display text-5xl md:text-7xl text-[var(--ink)] leading-[0.92] mb-10">
+              Straßenküche,<br />
+              <span className="font-display-italic">ehrlich gemacht.</span>
+            </h2>
+            <div className="space-y-5 text-base md:text-lg leading-relaxed text-[var(--muted-2)]">
+              <p>
+                Wir stehen mitten auf dem Marktplatz von Coesfeld — zwischen Cafés,
+                Fußgängerzone und alter Kirche. Was wir machen, ist einfach: einen
+                richtig guten Döner. Hochwertiges Hähnchen- oder Kalbfleisch, sorgfältig
+                gewürzt, am Spieß gegrillt.
+              </p>
+              <p>
+                Dazu knuspriges Brot, Salat vom Morgen und Saucen nach eigenem Rezept.
+                Für alle, die es lieber ohne Fleisch mögen, gibt es bei uns — exklusiv
+                in Coesfeld — veganes Spießfleisch. Vom Grill, wie beim Original.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Werte / Qualität */}
+      <section className="bg-[var(--ink)] text-[var(--cream)] py-20 md:py-28">
+        <div className="max-w-[1400px] mx-auto px-5 md:px-10">
+          <div className="text-center mb-16">
+            <div className="eyebrow text-[var(--saffron)] mb-5">Unser Anspruch</div>
+            <h2 className="font-display text-5xl md:text-7xl leading-[0.92]">
+              Drei Dinge,<br />
+              <span className="font-display-italic">die zählen.</span>
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+            <Value num="01" title="Zutaten mit Herkunft" text="Frisches Gemüse vom Morgen, Fleisch von vertrauten Lieferanten, hausgemachte Saucen — keine Abkürzungen." />
+            <Value num="02" title="Handwerk am Spieß" text="Unser Fleisch wird am Spieß gegrillt und frisch geschnitten. Kein industriell vorbereitetes Döner-Produkt." />
+            <Value num="03" title="Pflanzlich mitgedacht" text="Als erste in Coesfeld haben wir veganes Spießfleisch eingeführt — für alle, die auch ohne Fleisch nicht aufs Erlebnis verzichten wollen." />
+          </div>
+        </div>
+      </section>
+
+      {/* Zahlen */}
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 py-20 md:py-28">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+          <BigStat value="4,9" label="Google-Bewertung" sub="Über 190 Rezensionen" />
+          <BigStat value="50+" label="Gerichte auf der Karte" sub="Von Döner bis Dessert" />
+          <BigStat value="Seit '23" label="Am Marktplatz" sub="Markt 3, Coesfeld" />
+          <BigStat value="15 Min." label="Durchschn. Abholzeit" sub="Schneller als gedacht" />
+        </div>
+      </section>
+
+      {/* Zitat */}
+      <section className="bg-[var(--cream-2)] py-20 md:py-28">
+        <div className="max-w-3xl mx-auto px-5 md:px-10 text-center">
+          <I.Quote className="w-12 h-12 mx-auto text-[var(--saffron-2)] mb-6" />
+          <p className="font-display-italic text-3xl md:text-5xl text-[var(--ink)] leading-[1.1]">
+            „Absolute Empfehlung.<br />Ich komme gerne wieder."
+          </p>
+          <div className="eyebrow text-[var(--muted)] mt-8">Gast-Rezension</div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 py-20 md:py-28 text-center">
+        <h2 className="font-display text-5xl md:text-7xl text-[var(--ink)] leading-[0.92] mb-8">
+          Hungrig <span className="font-display-italic">geworden?</span>
+        </h2>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <a href="#/speisekarte" onClick={(e) => { e.preventDefault(); navigate("/speisekarte"); }} className="btn-primary">
+            Zur Speisekarte <I.Arrow className="w-4 h-4" />
+          </a>
+          <a href="#/kontakt" onClick={(e) => { e.preventDefault(); navigate("/kontakt"); }} className="btn-outline">
+            Besuch uns
+          </a>
+        </div>
+      </section>
+    </>
+  );
+}
+
+const Value = ({ num, title, text }) => (
+  <div>
+    <div className="eyebrow text-[var(--saffron)] mb-4">{num}</div>
+    <h3 className="font-display text-2xl md:text-3xl mb-4">{title}</h3>
+    <p className="text-sm md:text-base leading-relaxed opacity-70">{text}</p>
+  </div>
+);
+
+const BigStat = ({ value, label, sub }) => (
+  <div>
+    <div className="font-display text-5xl md:text-6xl text-[var(--ink)] leading-none mb-3">{value}</div>
+    <div className="eyebrow text-[var(--muted)] mb-2">{label}</div>
+    <div className="text-sm text-[var(--muted-2)]">{sub}</div>
+  </div>
+);
+
+/* ================================================================
+   KONTAKT-SEITE
+   ================================================================ */
+function ContactPage({ openStatus }) {
+  return (
+    <>
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 pt-16 md:pt-24 pb-12">
+        <div className="eyebrow text-[var(--saffron-2)] mb-5">Kontakt</div>
+        <h1 className="font-display text-6xl md:text-[9rem] leading-[0.88] text-[var(--ink)]">
+          Besuch uns<span className="text-[var(--saffron-2)]">.</span>
+        </h1>
+        <p className="font-display-italic text-xl md:text-2xl text-[var(--muted-2)] mt-6 max-w-2xl">
+          Markt 3 — mitten auf dem Marktplatz von Coesfeld. Ruf an, komm vorbei oder bestell online.
+        </p>
+      </section>
+
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 py-16 md:py-24">
+        <div className="grid md:grid-cols-12 gap-10 md:gap-16">
+          <div className="md:col-span-5">
+            <div className="eyebrow text-[var(--saffron-2)] mb-6">Unsere Adresse</div>
+            <div className="space-y-0 border-t border-[var(--line-strong)]">
+              <ContactRow icon={<I.Pin className="w-4 h-4" />} label="Anschrift" value="Markt 3, 48653 Coesfeld" />
+              <ContactRow icon={<I.Phone className="w-4 h-4" />} label="Telefon" value="02541 8444390" href="tel:+4925418444390" />
+              <ContactRow icon={<I.Mail className="w-4 h-4" />} label="E-Mail" value="info@kebab-bros-coesfeld.de" href="mailto:info@kebab-bros-coesfeld.de" />
+            </div>
+
+            <div className="mt-10 p-6 border border-[var(--saffron)]/40 bg-[var(--saffron)]/10">
+              <div className="eyebrow text-[var(--saffron-2)] mb-3 flex items-center gap-2">
+                <span className={"w-1.5 h-1.5 rounded-full " + (openStatus.isOpen ? "bg-green-600 blink" : "bg-[var(--paprika)]")}></span>
+                {openStatus.isOpen ? "Wir sind geöffnet" : "Aktuell geschlossen"}
+              </div>
+              <p className="text-sm leading-relaxed text-[var(--char)]">{openStatus.label}</p>
+            </div>
+          </div>
+
+          <div className="md:col-span-7">
+            <div className="eyebrow text-[var(--saffron-2)] mb-6">Öffnungszeiten</div>
+            <div className="space-y-0">
+              <HourRow day="Montag" hours="11:30 — 21:30" />
+              <HourRow day="Dienstag" hours="11:30 — 21:30" />
+              <HourRow day="Mittwoch" hours="11:30 — 21:30" />
+              <HourRow day="Donnerstag" hours="11:30 — 21:30" />
+              <HourRow day="Freitag" hours="11:30 — 21:30" />
+              <HourRow day="Samstag" hours="13:00 — 21:30" />
+              <HourRow day="Sonntag" hours="13:00 — 21:30" />
+            </div>
+
+            <div className="mt-10 grid sm:grid-cols-2 gap-4">
+              <div className="p-5 bg-white border border-[var(--line-strong)]">
+                <I.Truck className="w-5 h-5 mb-3 text-[var(--saffron-2)]" />
+                <div className="font-display text-xl mb-2">Lieferung</div>
+                <div className="text-sm text-[var(--muted-2)]">Coesfeld ab 15 €<br />Außerhalb ab 25 €</div>
+              </div>
+              <div className="p-5 bg-white border border-[var(--line-strong)]">
+                <I.Store className="w-5 h-5 mb-3 text-[var(--saffron-2)]" />
+                <div className="font-display text-xl mb-2">Abholung</div>
+                <div className="text-sm text-[var(--muted-2)]">In ca. 15 Min.<br />Bei Abholung fertig</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Embedded Map */}
+      <section className="max-w-[1400px] mx-auto px-5 md:px-10 pb-24">
+        <div className="eyebrow text-[var(--saffron-2)] mb-5">So findest du uns</div>
+        <div className="aspect-[16/9] overflow-hidden border border-[var(--line-strong)]">
+          <iframe
+            src="https://www.openstreetmap.org/export/embed.html?bbox=7.163%2C51.944%2C7.173%2C51.948&layer=mapnik&marker=51.946%2C7.168"
+            style={{ width: "100%", height: "100%", border: 0 }}
+            loading="lazy"
+            title="Kebab Bro's Coesfeld"
+          />
+        </div>
+        <div className="mt-4 flex flex-wrap justify-between items-center gap-3">
+          <p className="text-sm text-[var(--muted-2)]">Markt 3, 48653 Coesfeld · mitten in der Fußgängerzone</p>
+          <a href="https://www.google.com/maps?q=Markt+3+Coesfeld" target="_blank" rel="noopener" className="text-sm text-[var(--saffron-2)] hover:underline flex items-center gap-1.5 font-archivo uppercase tracking-[0.15em]">
+            In Google Maps öffnen <I.ArrowUR className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </section>
+    </>
+  );
+}
+
+const ContactRow = ({ icon, label, value, href }) => {
+  const content = (
+    <div className="flex items-start gap-5 py-5 border-b border-[var(--line-strong)] group">
+      <div className="text-[var(--saffron-2)] mt-1">{icon}</div>
+      <div className="flex-1">
+        <div className="eyebrow text-[var(--muted)] mb-1">{label}</div>
+        <div className="text-lg md:text-xl font-display text-[var(--ink)] group-hover:text-[var(--saffron-2)] transition">{value}</div>
+      </div>
+      {href && <I.ArrowUR className="w-4 h-4 text-[var(--muted)] group-hover:text-[var(--saffron-2)] transition" />}
+    </div>
+  );
+  return href ? <a href={href}>{content}</a> : <div>{content}</div>;
+};
+
+const HourRow = ({ day, hours }) => (
+  <div className="flex justify-between items-baseline py-3.5 border-b border-[var(--line)] last:border-0">
+    <span className="font-display text-lg md:text-xl text-[var(--ink)]">{day}</span>
+    <span className="leader"></span>
+    <span className="text-sm text-[var(--muted-2)] tabular-nums">{hours}</span>
+  </div>
+);
+
+/* ================================================================
+   IMPRESSUM
+   ================================================================ */
+function LegalPage({ navigate }) {
+  return (
+    <section className="max-w-3xl mx-auto px-5 md:px-10 py-16 md:py-24">
+      <div className="eyebrow text-[var(--saffron-2)] mb-5 flex items-center gap-3">
+        <a href="#/" onClick={(e) => { e.preventDefault(); navigate("/"); }} className="hover:text-[var(--ink)]">Start</a>
+        <span>/</span>
+        <span className="text-[var(--ink)]">Impressum</span>
+      </div>
+      <h1 className="font-display text-5xl md:text-7xl text-[var(--ink)] mb-10 leading-[0.9]">Impressum</h1>
+      <div className="space-y-6 text-base leading-relaxed text-[var(--char)]">
+        <div>
+          <h2 className="font-display text-2xl mb-3">Angaben gemäß § 5 TMG</h2>
+          <p>Kebab Bro's<br />Markt 3<br />48653 Coesfeld<br />Deutschland</p>
+        </div>
+        <div>
+          <h2 className="font-display text-2xl mb-3">Kontakt</h2>
+          <p>Telefon: 02541 8444390<br />E-Mail: info@kebab-bros-coesfeld.de</p>
+        </div>
+        <div>
+          <h2 className="font-display text-2xl mb-3">Haftung für Inhalte</h2>
+          <p className="text-[var(--muted-2)]">
+            Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf
+            diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis
+            10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte
+            oder gespeicherte fremde Informationen zu überwachen oder nach Umständen
+            zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+          </p>
+        </div>
+        <div className="pt-6 border-t border-[var(--line-strong)]">
+          <p className="text-sm text-[var(--muted)] italic">
+            Dieser Eintrag ist ein Platzhalter. Bitte durch vollständige rechtliche Angaben ersetzen.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
+   404
+   ================================================================ */
+function NotFoundPage({ navigate }) {
+  return (
+    <section className="max-w-3xl mx-auto px-5 md:px-10 py-32 text-center">
+      <div className="font-display text-[10rem] md:text-[16rem] text-[var(--saffron)] leading-none">404</div>
+      <h1 className="font-display text-4xl md:text-5xl text-[var(--ink)] mb-4">Seite nicht gefunden</h1>
+      <p className="text-[var(--muted-2)] mb-10">Die Seite, die du suchst, existiert nicht oder wurde verschoben.</p>
+      <a href="#/" onClick={(e) => { e.preventDefault(); navigate("/"); }} className="btn-primary">
+        Zur Startseite <I.Home className="w-4 h-4" />
+      </a>
+    </section>
+  );
+}
+
+/* ================================================================
+   ADMIN
+   ================================================================ */
+function AdminPage({ orders }) {
+  const [authed, setAuthed] = useState(false);
+  const [pw, setPw] = useState("");
+  const [err, setErr] = useState(false);
+
+  if (!authed) {
+    return (
+      <section className="max-w-md mx-auto px-5 py-24">
+        <div className="bg-[var(--ink)] text-[var(--cream)] p-10">
+          <I.Lock className="w-8 h-8 mb-5 text-[var(--saffron)]" />
+          <div className="eyebrow text-[var(--saffron)] mb-3">Administration</div>
+          <h1 className="font-display text-3xl mb-3">Zugang</h1>
+          <p className="text-sm opacity-70 mb-6">
+            Nur für Mitarbeiter.<br />
+            Demo-Passwort: <code className="bg-white/10 px-2 py-0.5 text-xs">bros2026</code>
+          </p>
+          <input type="password" value={pw} onChange={(e) => { setPw(e.target.value); setErr(false); }}
+            placeholder="Passwort"
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-[var(--saffron)] outline-none text-[var(--cream)]" />
+          {err && <p className="text-[var(--saffron)] text-sm mt-3 font-archivo">Falsches Passwort</p>}
+          <button onClick={() => pw === "bros2026" ? setAuthed(true) : setErr(true)}
+            className="mt-6 w-full py-3.5 bg-[var(--saffron)] text-[var(--ink)] font-semibold hover:bg-[var(--cream)] transition uppercase tracking-[0.1em] text-sm font-archivo">
+            Anmelden
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  const total = orders.reduce((s, o) => s + o.total, 0);
+  return (
+    <section className="max-w-6xl mx-auto px-5 md:px-10 py-20 md:py-28">
+      <div className="eyebrow text-[var(--saffron-2)] mb-5">Administration</div>
+      <h1 className="font-display text-6xl md:text-8xl text-[var(--ink)] leading-[0.9] mb-12">Bestellungen</h1>
+      <div className="grid sm:grid-cols-3 gap-4 mb-12">
+        <StatCard label="Gesamt-Umsatz" value={`€ ${EUR(total)}`} />
+        <StatCard label="Bestellungen" value={orders.length} />
+        <StatCard label="Ø Warenkorb" value={orders.length ? `€ ${EUR(total / orders.length)}` : "—"} />
+      </div>
+      {orders.length === 0 ? (
+        <div className="p-14 text-center bg-white border border-dashed border-[var(--line-strong)] text-[var(--muted)] font-display-italic text-xl">
+          Noch keine Bestellungen eingegangen.
+        </div>
+      ) : (
+        <div className="bg-white border border-[var(--line-strong)]">
+          {orders.map((o, i) => <OrderRow key={o.id} order={o} last={i === orders.length - 1} />)}
+        </div>
+      )}
+    </section>
+  );
+}
+
+const StatCard = ({ label, value }) => (
+  <div className="p-6 bg-white border border-[var(--line-strong)]">
+    <div className="eyebrow text-[var(--muted)]">{label}</div>
+    <div className="font-display text-4xl mt-3 text-[var(--ink)] tabular-nums">{value}</div>
+  </div>
+);
+
+function OrderRow({ order, last }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={last ? "" : "border-b border-[var(--line-strong)]"}>
+      <button onClick={() => setOpen(!open)} className="w-full p-5 flex items-center justify-between gap-4 hover:bg-[var(--cream-2)]/50 transition text-left">
+        <div className="flex items-center gap-4">
+          <div className="w-11 h-11 bg-[var(--ink)] text-[var(--cream)] flex items-center justify-center flex-shrink-0">
+            {order.delivery ? <I.Truck className="w-4 h-4" /> : <I.Store className="w-4 h-4" />}
+          </div>
+          <div>
+            <div className="font-display text-lg text-[var(--ink)] tabular-nums">{order.id}</div>
+            <div className="text-xs text-[var(--muted)]">{new Date(order.createdAt).toLocaleString("de-DE")} · {order.customer.name}</div>
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="font-display text-xl text-[var(--ink)] tabular-nums">€ {EUR(order.total)}</div>
+          <div className="eyebrow text-[var(--muted)]">{order.status}</div>
+        </div>
+      </button>
+      {open && (
+        <div className="px-5 pb-5 bg-[var(--cream-2)]/40 anim-fade">
+          {order.items.map((i) => (
+            <div key={i.lineId} className="flex items-baseline gap-2 py-1.5 text-sm">
+              <span className="tabular-nums w-6">{i.qty}×</span>
+              <span className="flex-1">{i.name}{i.sauce && <span className="text-[var(--muted)] italic"> — {i.sauce}</span>}</span>
+              <span className="leader"></span>
+              <span className="tabular-nums">€ {EUR(i.price * i.qty)}</span>
+            </div>
+          ))}
+          <div className="mt-4 pt-4 border-t border-[var(--line)] grid sm:grid-cols-2 gap-2 text-xs text-[var(--muted)]">
+            <div>Telefon: <strong className="text-[var(--ink)]">{order.customer.phone}</strong></div>
+            <div>Zahlung: <strong className="text-[var(--ink)]">{order.customer.payment}</strong></div>
+            {order.delivery && <div className="sm:col-span-2">Adresse: <strong className="text-[var(--ink)]">{order.customer.street}, {order.customer.plz} {order.customer.city}</strong></div>}
+            {order.customer.notes && <div className="sm:col-span-2">Notiz: <em>{order.customer.notes}</em></div>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ================================================================
+   CART DRAWER
+   ================================================================ */
+function CartDrawer({ cart, subtotal, onClose, onUpdate, onRemove, onClear, onCheckout, navigate }) {
+  const [mode, setMode] = useState("abholung");
+  const minOrder = mode === "lieferung" ? 15 : 0;
+  const canCheckout = cart.length > 0 && subtotal >= minOrder;
+  const toMin = Math.max(0, minOrder - subtotal);
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end anim-fade">
+      <div onClick={onClose} className="absolute inset-0 bg-black/50"></div>
+      <aside className="relative w-full max-w-md bg-[var(--cream)] h-full flex flex-col anim-in-r shadow-2xl">
+        <div className="p-6 border-b border-[var(--line-strong)] flex items-center justify-between">
+          <div>
+            <div className="eyebrow text-[var(--muted)]">Dein Warenkorb</div>
+            <div className="font-display text-3xl mt-1 text-[var(--ink)]">
+              {cart.length} {cart.length === 1 ? "Position" : "Positionen"}
+            </div>
+          </div>
+          <button onClick={onClose} className="p-2 hover:bg-[var(--cream-2)] transition"><I.X className="w-5 h-5" /></button>
+        </div>
+
+        <div className="p-5 border-b border-[var(--line)]">
+          <div className="grid grid-cols-2 gap-0 border border-[var(--ink)]">
+            <button onClick={() => setMode("abholung")}
+              className={"py-3.5 text-sm font-archivo uppercase tracking-[0.1em] transition flex items-center justify-center gap-2 " + (mode === "abholung" ? "bg-[var(--ink)] text-[var(--cream)]" : "text-[var(--ink)] hover:bg-[var(--cream-2)]")}>
+              <I.Store className="w-4 h-4" /> Abholung
+            </button>
+            <button onClick={() => setMode("lieferung")}
+              className={"py-3.5 text-sm font-archivo uppercase tracking-[0.1em] transition flex items-center justify-center gap-2 " + (mode === "lieferung" ? "bg-[var(--ink)] text-[var(--cream)]" : "text-[var(--ink)] hover:bg-[var(--cream-2)]")}>
+              <I.Truck className="w-4 h-4" /> Lieferung
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-5 space-y-5">
+          {cart.length === 0 && (
+            <div className="py-20 text-center">
+              <I.Bag className="w-14 h-14 mx-auto mb-6 text-[var(--muted)]/30" stroke={1} />
+              <p className="font-display-italic text-2xl text-[var(--muted)] mb-4">Noch leer.</p>
+              <button onClick={() => { onClose(); navigate("/speisekarte"); }} className="text-sm text-[var(--saffron-2)] underline font-archivo">
+                Zur Speisekarte
+              </button>
+            </div>
+          )}
+          {cart.map((item) => (
+            <div key={item.lineId} className="pb-5 border-b border-[var(--line)] last:border-0">
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <div className="min-w-0">
+                  <div className="font-display text-lg text-[var(--ink)] leading-tight">{item.name}</div>
+                  {item.sauce && <div className="text-xs text-[var(--muted)] mt-1.5 italic">mit {item.sauce}</div>}
+                </div>
+                <button onClick={() => onRemove(item.lineId)} className="text-[var(--muted)] hover:text-[var(--paprika)] p-1">
+                  <I.X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1 border border-[var(--line-strong)]">
+                  <button onClick={() => onUpdate(item.lineId, -1)} className="w-8 h-8 flex items-center justify-center hover:bg-[var(--cream-2)]"><I.Minus className="w-3 h-3" /></button>
+                  <span className="w-8 text-center text-sm tabular-nums">{item.qty}</span>
+                  <button onClick={() => onUpdate(item.lineId, 1)} className="w-8 h-8 flex items-center justify-center hover:bg-[var(--cream-2)]"><I.Plus className="w-3 h-3" /></button>
+                </div>
+                <div className="font-display text-xl text-[var(--ink)] tabular-nums">€ {EUR(item.price * item.qty)}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {cart.length > 0 && (
+          <div className="border-t border-[var(--line-strong)] p-5 space-y-4">
+            {mode === "lieferung" && toMin > 0 && (
+              <div className="p-4 bg-[var(--cream-2)] text-sm">
+                <div className="flex justify-between mb-2 font-archivo">
+                  <span>Noch <strong className="text-[var(--paprika)]">€ {EUR(toMin)}</strong> bis Lieferung</span>
+                  <span className="text-[var(--muted)] tabular-nums">{Math.round((subtotal / 15) * 100)}%</span>
+                </div>
+                <div className="h-1 bg-white overflow-hidden">
+                  <div className="h-full bg-[var(--saffron)] transition-all duration-500" style={{ width: Math.min(100, (subtotal / 15) * 100) + "%" }}></div>
+                </div>
+              </div>
+            )}
+            <div className="flex items-baseline justify-between pt-2">
+              <span className="font-display text-2xl text-[var(--ink)]">Summe</span>
+              <span className="font-display text-4xl text-[var(--ink)] tabular-nums">€ {EUR(subtotal)}</span>
+            </div>
+            <button onClick={onCheckout} disabled={!canCheckout}
+              className="w-full btn-primary disabled:opacity-40 disabled:cursor-not-allowed py-4">
+              Zur Kasse <I.Arrow className="w-4 h-4" />
+            </button>
+            <button onClick={onClear} className="w-full text-xs text-[var(--muted)] hover:text-[var(--paprika)] py-1 uppercase tracking-[0.2em] font-archivo">Warenkorb leeren</button>
+          </div>
+        )}
+      </aside>
+    </div>
+  );
+}
+
+/* ================================================================
+   CHECKOUT
+   ================================================================ */
+function CheckoutModal({ subtotal, cart, onClose, onSubmit }) {
+  const [form, setForm] = useState({
+    mode: "abholung", name: "", phone: "", email: "",
+    street: "", plz: "", city: "Coesfeld", payment: "bar", notes: "",
+  });
+  const minOrder = form.mode === "lieferung" ? (form.plz === "48653" ? 15 : 25) : 0;
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = "Name fehlt";
+    if (!/^[0-9+\s\-()]{6,}$/.test(form.phone)) e.phone = "Telefonnummer prüfen";
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "E-Mail ungültig";
+    if (form.mode === "lieferung") {
+      if (!form.street.trim()) e.street = "Straße fehlt";
+      if (!/^\d{5}$/.test(form.plz)) e.plz = "5-stellige PLZ";
+      if (subtotal < minOrder) e.min = "Mindestbestellwert € " + EUR(minOrder);
+    }
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center p-0 md:p-6 anim-fade">
+      <div onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+      <div className="relative bg-[var(--cream)] w-full max-w-2xl max-h-screen md:max-h-[92vh] overflow-y-auto shadow-2xl anim-up">
+        <div className="sticky top-0 z-10 bg-[var(--cream)] border-b border-[var(--line-strong)] px-6 py-5 flex items-center justify-between">
+          <div>
+            <div className="eyebrow text-[var(--saffron-2)]">Letzter Schritt</div>
+            <div className="font-display text-3xl mt-1 text-[var(--ink)]">Bestellung abschließen</div>
+          </div>
+          <button onClick={onClose} className="p-2 hover:bg-[var(--cream-2)]"><I.X className="w-5 h-5" /></button>
+        </div>
+
+        <div className="p-6 md:p-8 space-y-8">
+          <Field label="Abholen oder liefern lassen?">
+            <div className="grid grid-cols-2 gap-0 border border-[var(--ink)]">
+              <button onClick={() => setForm({ ...form, mode: "abholung" })}
+                className={"py-4 px-4 transition text-left " + (form.mode === "abholung" ? "bg-[var(--ink)] text-[var(--cream)]" : "hover:bg-[var(--cream-2)]")}>
+                <div className="flex items-center gap-2 mb-1"><I.Store className="w-4 h-4" /><span className="font-medium font-archivo text-sm uppercase tracking-[0.1em]">Abholung</span></div>
+                <div className="text-xs opacity-70">In ca. 15 Min.</div>
+              </button>
+              <button onClick={() => setForm({ ...form, mode: "lieferung" })}
+                className={"py-4 px-4 transition text-left " + (form.mode === "lieferung" ? "bg-[var(--ink)] text-[var(--cream)]" : "hover:bg-[var(--cream-2)]")}>
+                <div className="flex items-center gap-2 mb-1"><I.Truck className="w-4 h-4" /><span className="font-medium font-archivo text-sm uppercase tracking-[0.1em]">Lieferung</span></div>
+                <div className="text-xs opacity-70">30 – 60 Min.</div>
+              </button>
+            </div>
+          </Field>
+
+          <div className="grid sm:grid-cols-2 gap-5">
+            <Field label="Name" error={errors.name}>
+              <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="input" placeholder="Max Mustermann" />
+            </Field>
+            <Field label="Telefon" error={errors.phone}>
+              <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="input" placeholder="0170 1234567" />
+            </Field>
+          </div>
+          <Field label="E-Mail (optional, für Bestätigung)" error={errors.email}>
+            <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="input" placeholder="du@example.de" />
+          </Field>
+
+          {form.mode === "lieferung" && (
+            <div className="space-y-5 p-5 bg-white border border-[var(--line-strong)] anim-up">
+              <div className="eyebrow text-[var(--saffron-2)]">Lieferadresse</div>
+              <Field label="Straße & Hausnummer" error={errors.street}>
+                <input value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} className="input" placeholder="Markt 3" />
+              </Field>
+              <div className="grid grid-cols-3 gap-4">
+                <Field label="PLZ" error={errors.plz}>
+                  <input value={form.plz} onChange={(e) => setForm({ ...form, plz: e.target.value })} className="input" placeholder="48653" maxLength={5} />
+                </Field>
+                <div className="col-span-2">
+                  <Field label="Stadt">
+                    <input value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="input" />
+                  </Field>
+                </div>
+              </div>
+              <p className="text-xs text-[var(--muted)] leading-relaxed">
+                Coesfeld (48653): Mindestbestellwert 15 € · außerhalb 25 € — Lieferung kostenfrei.
+              </p>
+              {errors.min && <div className="text-sm text-[var(--paprika)] font-semibold font-archivo">{errors.min}</div>}
+            </div>
+          )}
+
+          <Field label="Zahlungsart">
+            <div className="grid grid-cols-2 gap-0 border border-[var(--ink)]">
+              <button onClick={() => setForm({ ...form, payment: "bar" })}
+                className={"py-4 px-4 transition text-left " + (form.payment === "bar" ? "bg-[var(--ink)] text-[var(--cream)]" : "hover:bg-[var(--cream-2)]")}>
+                <div className="flex items-center gap-2 mb-1"><I.Cash className="w-4 h-4" /><span className="font-medium font-archivo text-sm uppercase tracking-[0.1em]">Bar</span></div>
+                <div className="text-xs opacity-70">{form.mode === "lieferung" ? "bei Lieferung" : "bei Abholung"}</div>
+              </button>
+              <button onClick={() => setForm({ ...form, payment: "paypal" })}
+                className={"py-4 px-4 transition text-left " + (form.payment === "paypal" ? "bg-[var(--ink)] text-[var(--cream)]" : "hover:bg-[var(--cream-2)]")}>
+                <div className="flex items-center gap-2 mb-1"><I.Card className="w-4 h-4" /><span className="font-medium font-archivo text-sm uppercase tracking-[0.1em]">PayPal</span></div>
+                <div className="text-xs opacity-70">Online sicher</div>
+              </button>
+            </div>
+          </Field>
+
+          <Field label="Anmerkungen (optional)">
+            <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} rows={2} className="input" placeholder="z. B. bitte an der Seitentür klingeln" />
+          </Field>
+
+          <div className="bg-[var(--ink)] text-[var(--cream)] p-6">
+            <div className="eyebrow text-[var(--saffron)] mb-4">Deine Bestellung</div>
+            <div className="space-y-2 text-sm opacity-90 max-h-48 overflow-y-auto mb-5">
+              {cart.map((i) => (
+                <div key={i.lineId} className="flex items-baseline gap-2">
+                  <span className="tabular-nums w-6">{i.qty} ×</span>
+                  <span className="flex-1">{i.name}</span>
+                  <span className="leader opacity-20"></span>
+                  <span className="tabular-nums">€ {EUR(i.price * i.qty)}</span>
+                </div>
+              ))}
+            </div>
+            <div className="pt-5 border-t border-white/10 flex justify-between items-baseline">
+              <span className="font-display text-2xl">Summe</span>
+              <span className="font-display text-4xl text-[var(--saffron)] tabular-nums">€ {EUR(subtotal)}</span>
+            </div>
+          </div>
+
+          <button onClick={() => { if (validate()) onSubmit(form); }} className="w-full btn-gold py-5 text-sm">
+            Kostenpflichtig bestellen <I.Arrow className="w-4 h-4" />
+          </button>
+          <p className="text-xs text-center text-[var(--muted)] leading-relaxed">
+            Dies ist eine Demo — es werden keine Zahlungen ausgeführt.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const Field = ({ label, error, children }) => (
+  <div>
+    <label className="eyebrow text-[var(--muted)] block mb-2.5">{label}</label>
+    {children}
+    {error && <div className="text-xs text-[var(--paprika)] mt-2 font-semibold font-archivo">{error}</div>}
+  </div>
+);
+
+/* ================================================================
+   ORDER CONFIRMATION
+   ================================================================ */
+function OrderConfirmation({ order, onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 anim-fade">
+      <div className="absolute inset-0 bg-[var(--ink)]/80 backdrop-blur-md"></div>
+      <div className="relative bg-[var(--cream)] max-w-lg w-full overflow-hidden shadow-2xl anim-up">
+        <div className="p-10 text-center border-b border-[var(--line-strong)]">
+          <div className="w-16 h-16 mx-auto border border-[var(--ink)] rounded-full flex items-center justify-center mb-6">
+            <I.Check className="w-6 h-6 text-[var(--ink)]" stroke={2} />
+          </div>
+          <div className="eyebrow text-[var(--saffron-2)] mb-3">Bestellung eingegangen</div>
+          <h2 className="font-display text-4xl text-[var(--ink)]">Merci, {order.customer.name.split(" ")[0]}.</h2>
+          <p className="text-[var(--muted-2)] mt-3">Wir legen direkt für dich los.</p>
+        </div>
+        <div className="p-8 space-y-6">
+          <div className="text-center py-5 border-y border-dashed border-[var(--line-strong)]">
+            <div className="eyebrow text-[var(--muted)] mb-2">Bestellnummer</div>
+            <div className="font-display text-4xl text-[var(--ink)] tracking-wider tabular-nums">{order.id}</div>
+          </div>
+          <div className="space-y-0">
+            <ConfRow label="Modus" value={order.delivery ? "Lieferung" : "Abholung"} />
+            <ConfRow label="Zahlung" value={order.customer.payment === "paypal" ? "PayPal" : "Barzahlung"} />
+            <ConfRow label="Summe" value={`€ ${EUR(order.total)}`} bold />
+            <ConfRow label="Zeit" value={order.delivery ? "30 – 60 Min." : "ca. 15 Min."} />
+          </div>
+          <a href="tel:+4925418444390" className="block text-center p-4 bg-[var(--ink)] text-[var(--cream)] text-sm hover:bg-[var(--saffron-2)] transition">
+            Fragen? <strong className="ml-2 tabular-nums">02541 8444390</strong>
+          </a>
+          <button onClick={onClose} className="w-full btn-outline">Zurück zur Startseite</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const ConfRow = ({ label, value, bold }) => (
+  <div className="flex items-baseline gap-2 py-3 border-b border-[var(--line)] last:border-0">
+    <span className="eyebrow text-[var(--muted)]">{label}</span>
+    <span className="leader"></span>
+    <span className={"text-sm " + (bold ? "font-display text-xl text-[var(--ink)] tabular-nums" : "text-[var(--char)]")}>{value}</span>
+  </div>
+);
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+function Footer({ navigate }) {
+  const go = (href) => (e) => { e.preventDefault(); navigate(href); };
+  return (
+    <footer className="bg-[var(--ink)] text-[var(--cream)]">
+      <div className="max-w-[1400px] mx-auto px-5 md:px-10 py-20">
+        <div className="mb-16 pb-16 border-b border-white/10 overflow-hidden">
+          <div className="font-display text-[clamp(5rem,16vw,14rem)] leading-[0.85] text-[var(--cream)]/90">
+            Kebab Bros<span className="text-[var(--saffron)]">.</span>
+          </div>
+          <div className="eyebrow text-[var(--saffron)] mt-4">Coesfeld · Markt 3 · est. 2023</div>
+        </div>
+
+        <div className="grid md:grid-cols-12 gap-10 mb-12">
+          <div className="md:col-span-5">
+            <Logo height={64} variant="dark" />
+            <p className="opacity-60 text-sm max-w-md leading-relaxed mt-6">
+              Handwerklicher Döner vom Marktplatz Coesfeld. Frische Zutaten, pflanzliche Optionen,
+              über 50 Gerichte auf der Karte.
+            </p>
+            <div className="flex gap-2 mt-7">
+              <SocialLink icon={<I.Insta className="w-4 h-4" />} />
+              <SocialLink icon={<I.FB className="w-4 h-4" />} />
+              <SocialLink icon={<I.Mail className="w-4 h-4" />} />
+            </div>
+          </div>
+          <div className="md:col-span-3">
+            <div className="eyebrow text-[var(--saffron)] mb-5">Kontakt</div>
+            <div className="space-y-2 text-sm opacity-80">
+              <div>Markt 3</div>
+              <div>48653 Coesfeld</div>
+              <div className="pt-3"><a href="tel:+4925418444390" className="hover:text-[var(--saffron)] tabular-nums">02541 8444390</a></div>
+              <div><a href="mailto:info@kebab-bros-coesfeld.de" className="hover:text-[var(--saffron)]">info@kebab-bros-coesfeld.de</a></div>
+            </div>
+          </div>
+          <div className="md:col-span-2">
+            <div className="eyebrow text-[var(--saffron)] mb-5">Navigation</div>
+            <div className="space-y-2 text-sm opacity-80">
+              <div><a href="#/" onClick={go("/")} className="hover:text-[var(--saffron)]">Start</a></div>
+              <div><a href="#/speisekarte" onClick={go("/speisekarte")} className="hover:text-[var(--saffron)]">Speisekarte</a></div>
+              <div><a href="#/ueber-uns" onClick={go("/ueber-uns")} className="hover:text-[var(--saffron)]">Über uns</a></div>
+              <div><a href="#/kontakt" onClick={go("/kontakt")} className="hover:text-[var(--saffron)]">Kontakt</a></div>
+            </div>
+          </div>
+          <div className="md:col-span-2">
+            <div className="eyebrow text-[var(--saffron)] mb-5">Öffnungszeiten</div>
+            <div className="space-y-2 text-sm opacity-80 tabular-nums">
+              <div>Mo – Fr · 11:30–21:30</div>
+              <div>Sa – So · 13:00–21:30</div>
+              <a href="#/admin" onClick={go("/admin")} className="mt-5 text-xs text-[var(--saffron)] hover:underline flex items-center gap-1.5 font-archivo uppercase tracking-[0.2em]">
+                <I.Lock className="w-3 h-3" /> Admin
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-8 border-t border-white/10 text-xs opacity-50">
+          <div>© {new Date().getFullYear()} Kebab Bro's Coesfeld — alle Rechte vorbehalten.</div>
+          <div className="flex gap-6 font-archivo">
+            <a href="#/impressum" onClick={go("/impressum")} className="hover:text-[var(--saffron)] uppercase tracking-[0.15em]">Impressum</a>
+            <a href="#/impressum" onClick={go("/impressum")} className="hover:text-[var(--saffron)] uppercase tracking-[0.15em]">Datenschutz</a>
+            <a href="#/impressum" onClick={go("/impressum")} className="hover:text-[var(--saffron)] uppercase tracking-[0.15em]">AGB</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+const SocialLink = ({ icon }) => (
+  <button className="w-10 h-10 border border-white/15 hover:border-[var(--saffron)] hover:text-[var(--saffron)] flex items-center justify-center transition">
+    {icon}
+  </button>
+);
+
+/* ================================================================
+   TOAST
+   ================================================================ */
+function Toast({ msg }) {
+  return (
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-6 py-3.5 bg-[var(--ink)] text-[var(--cream)] shadow-2xl anim-up text-sm flex items-center gap-3">
+      <I.Check className="w-4 h-4 text-[var(--saffron)]" stroke={2} />
+      <span className="font-medium">{msg}</span>
+    </div>
+  );
+}
+
+/* ================================================================
+   MOUNT
+   ================================================================ */
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+setTimeout(() => {
+  const l = document.getElementById('loader');
+  if (l) { l.classList.add('hide'); setTimeout(() => l.remove(), 500); }
+}, 500);
+
+</script>
+</body>
+</html>
